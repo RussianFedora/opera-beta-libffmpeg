@@ -1,5 +1,6 @@
 %global build_for_x86_64 1
 %global build_for_i386 0
+%define debug_package %{nil}
 
 %define chromium_system_libs 0
 
@@ -16,7 +17,7 @@
 Summary:	Additional FFmpeg library for Opera Web browser providing H264 and MP3 support
 Name:		%{opera_chan}-libffmpeg
 Version:	%{opera_major_ver}.0.1948.4
-Release:	1%{?dist}
+Release:	2%{?dist}
 Epoch:		5
 
 Group:		Applications/Internet
@@ -286,6 +287,9 @@ install -m 644 %{_builddir}/%{name}-%{version}/chromium-%{chromium_ver}/out/Rele
 %{_libdir}/%{opera_chan}/lib_extra/libffmpeg.so.*
 
 %changelog
+* Fri Aug 21 2015 carasin berlogue <carasin DOT berlogue AT mail DOT ru> 32.0.1948.4-2.R
+- Drop empty debuginfo package (affects Fedora >= 24)
+
 * Thu Aug 20 2015 carasin berlogue <carasin DOT berlogue AT mail DOT ru> 32.0.1948.4-1.R
 - Rename to opera-beta-libffmpeg according to new channel
 - Update to 32.0.1948.4
