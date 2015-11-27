@@ -1,6 +1,5 @@
-22bcafe291d4cdc209b24a89fd35819c  chromium-47.0.2526.35.tar.xz
+982e829b2a3a5eec2b15d66ab241beef  chromium-47.0.2526.69.tar.xz
 733076d203d457a2aa236445a0224860  patch_ffmpeg_gyp.patch
 bf0af213eeb9f33c2b36ec0ab944f1ca  depot_tools.tar.xz
 ca6cdd31217945be60426bab8554e50b  gn-binaries.tar.xz
 b65f11fe2e0d9500a76f0548d569ffe7  check_chromium_version.sh
-
