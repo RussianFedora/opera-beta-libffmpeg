@@ -1,11 +1,10 @@
 %global build_for_x86_64 1
-%global build_for_i386 0
+%global build_for_i386 1
 %define debug_package %{nil}
 
 %define chromium_system_libs 0
 
-%define chromium_ver 47.0.2526.73
-%define opera_major_ver 34
+%define chromium_ver 48.0.2564.41
 %define opera_chan opera-beta
 
 %if 0%{?fedora} >= 21
@@ -16,7 +15,7 @@
 
 Summary:	Additional FFmpeg library for Opera Web browser providing H264 and MP4 support
 Name:		%{opera_chan}-libffmpeg
-Version:	%{opera_major_ver}.0.2036.24
+Version:	35.0.2066.10
 Release:	1%{?dist}
 Epoch:		5
 
@@ -25,17 +24,14 @@ License:	BSD, LGPL
 URL:		https://gist.github.com/lukaszzek/ec04d5c953226c062dac
 
 Source0:	https://commondatastorage.googleapis.com/chromium-browser-official/chromium-%{chromium_ver}.tar.xz
-Source1:	https://gist.githubusercontent.com/lukaszzek/ec04d5c953226c062dac/raw/1a2720d602b8399967251137f876faf7d70cc0f3/patch_ffmpeg_gyp.patch
-Source2:	depot_tools.tar.xz
-Source3:	gn-binaries.tar.xz
-Source4:	check_chromium_version.sh
-
-#Patch0:	00-ffmpeg_gyp.patch
+Source1:	depot_tools.tar.xz
+Source2:	gn-binaries.tar.xz
+Source3:	check_chromium_version.sh
 
 %ifarch x86_64
-Provides:   libffmpeg.so.%{opera_major_ver}()(64bit)
+Provides:   libffmpeg.so()(64bit)
 %else
-Provides:   libffmpeg.so.%{opera_major_ver}
+Provides:   libffmpeg.so
 %endif
 
 %if 0%{?build_for_x86_64}
@@ -176,17 +172,9 @@ H264 and MP4 support. Opera-libffmpeg package includes this library.
 %prep
 %setup -q -c
 
-## Create symlink for compatibility with %patch0
-#pushd %{_builddir}/%{name}-%{version}
-#ln -s chromium-%{chromium_ver} chromium
-#popd
-
-#%patch0 -p1
-
 cd %{_builddir}/%{name}-%{version}/chromium-%{chromium_ver}
-patch -p1 < %{SOURCE1}
+xz -d %{SOURCE1}
 xz -d %{SOURCE2}
-xz -d %{SOURCE3}
 
 # Workaround for "No such file or directory" build error:
 touch ./chrome/test/data/webui/i18n_process_css_test.html
@@ -195,7 +183,7 @@ touch ./chrome/test/data/webui/i18n_process_css_test.html
 buildconfig+="-Dwerror=
                 -Dcomponent=shared_library
                 -Dffmpeg_branding=Chrome
-                -Dffmpeg_soname_version=%{opera_major_ver}"
+#               -Dffmpeg_soname_version=%{opera_major_ver}"
 
 %if 0%{?clang}
 buildconfig+=" -Dclang=1
@@ -286,12 +274,16 @@ ninja-build -C %{_builddir}/%{name}-%{version}/chromium-%{chromium_ver}/out/Rele
 
 %install
 mkdir -p %{buildroot}%{_libdir}/%{opera_chan}/lib_extra
-install -m 644 %{_builddir}/%{name}-%{version}/chromium-%{chromium_ver}/out/Release/lib/libffmpeg.so.%{opera_major_ver} %{buildroot}%{_libdir}/%{opera_chan}/lib_extra/
+install -m 644 %{_builddir}/%{name}-%{version}/chromium-%{chromium_ver}/out/Release/lib/libffmpeg.so %{buildroot}%{_libdir}/%{opera_chan}/lib_extra/
 
 %files
-%{_libdir}/%{opera_chan}/lib_extra/libffmpeg.so.*
+%{_libdir}/%{opera_chan}/lib_extra/libffmpeg.so
 
 %changelog
+* Wed Dec 16 2015 carasin berlogue <carasin DOT berlogue AT mail DOT ru> - 5:35.0.2066.10-1
+- Update to 35.0.2066.10
+- Remove %{opera_major_ver} due to upstream changes
+
 * Thu Dec 03 2015 carasin berlogue <carasin DOT berlogue AT mail DOT ru> - 5:34.0.2036.24-1
 - Update to 34.0.2036.24
 
