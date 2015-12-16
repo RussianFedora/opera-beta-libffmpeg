@@ -7,16 +7,16 @@
 %define chromium_ver 48.0.2564.41
 %define opera_chan opera-beta
 
-#%if 0%{?fedora} >= 21
-#%define clang 1
-#%else
+%if 0%{?fedora} >= 21
+%define clang 1
+%else
 %define clang 0
-#%endif
+%endif
 
 Summary:	Additional FFmpeg library for Opera Web browser providing H264 and MP4 support
 Name:		%{opera_chan}-libffmpeg
 Version:	35.0.2066.10
-Release:	3%{?dist}
+Release:	2%{?dist}
 Epoch:		5
 
 Group:		Applications/Internet
@@ -256,7 +256,9 @@ export CC=/usr/bin/clang
 export CXX=/usr/bin/clang++
 # Modern Clang produces a *lot* of warnings 
 export CXXFLAGS="${CXXFLAGS} -Wno-unknown-warning-option -Wno-unused-local-typedef -Wunknown-attributes -Wno-tautological-undefined-compare"
-export GYP_DEFINES="clang=1"
+export GYP_DEFINES="clang=1 enable_hidpi=1 enable_touch_ui=1 enable_hotwording=0"
+%else
+export GYP_DEFINES="enable_hidpi=1 enable_touch_ui=1 enable_hotwording=0"
 %endif
 
 cd %{_builddir}/%{name}-%{version}/chromium-%{chromium_ver}
@@ -277,9 +279,6 @@ install -m 644 %{_builddir}/%{name}-%{version}/chromium-%{chromium_ver}/out/Rele
 %{_libdir}/%{opera_chan}/lib_extra/libffmpeg.so
 
 %changelog
-* Wed Dec 16 2015 carasin berlogue <carasin DOT berlogue AT mail DOT ru> - 5:35.0.2066.10-3
-- use gcc instead clang
-
 * Wed Dec 16 2015 carasin berlogue <carasin DOT berlogue AT mail DOT ru> - 5:35.0.2066.10-2
 - Remove -Dffmpeg_soname_version=%{opera_major_ver}
 
