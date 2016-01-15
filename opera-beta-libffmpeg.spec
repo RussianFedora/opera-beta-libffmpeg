@@ -333,7 +333,7 @@ install -m 644 %{_builddir}/chromium-%{chromium_ver}/out/Release/lib/libffmpeg.s
 %{_libdir}/%{opera_chan}/lib_extra/libffmpeg.so
 
 %changelog
-* Fri Jan 15 2015 carasin berlogue <carasin DOT berlogue AT mail DOT ru> - 5:35.0.2066.23-1
+* Fri Jan 15 2016 carasin berlogue <carasin DOT berlogue AT mail DOT ru> - 5:35.0.2066.23-1
 - Update to 35.0.2066.23
 
 * Thu Jan 14 2016 carasin berlogue <carasin DOT berlogue AT mail DOT ru> - 5:35.0.2066.10-4
