@@ -8,7 +8,7 @@
 
 %define chromium_system_libs 1
 %define opera_chan opera-beta
-%define chromium_ver 48.0.2564.71
+%define opera_ver 35.0.2066.35
 
 %if 0%{?fedora} >= 22
 %define clang 1
@@ -18,7 +18,7 @@
 
 Summary:	Additional FFmpeg library for Opera Web browser providing H264 and MP4 support
 Name:		%{opera_chan}-libffmpeg
-Version:	35.0.2066.23
+Version:	48.0.2564.82
 Release:	1%{?dist}
 Epoch:		5
 
@@ -26,12 +26,10 @@ Group:		Applications/Internet
 License:	BSD, LGPL
 URL:		https://gist.github.com/lukaszzek/ec04d5c953226c062dac
 
-Source0:	https://commondatastorage.googleapis.com/chromium-browser-official/chromium-%{chromium_ver}.tar.xz
+Source0:	chromium-%{version}.clipped.tar.xz
 Source1:	gn-binaries.tar.xz
 Source2:	depot_tools.tar.xz
 Source3:	check_chromium_version.sh
-
-Nosource:	0
 
 BuildRequires:  SDL-devel
 BuildRequires:  alsa-lib-devel
@@ -143,7 +141,7 @@ BuildRequires:  xvidcore-devel
 BuildRequires:	clang
 %endif
 
-Requires:	%{opera_chan} = 5:%{version}
+Requires:	%{opera_chan} >= 5:%{opera_ver}
 
 %if 0%{?build_for_x86_64}
 %if !0%{?build_for_i386}
@@ -329,12 +327,18 @@ ninja-build -C out/Release ffmpeg
 
 %install
 mkdir -p %{buildroot}%{_libdir}/%{opera_chan}/lib_extra
-install -m 644 %{_builddir}/chromium-%{chromium_ver}/out/Release/lib/libffmpeg.so %{buildroot}%{_libdir}/%{opera_chan}/lib_extra/
+install -m 644 %{_builddir}/chromium-%{version}/out/Release/lib/libffmpeg.so %{buildroot}%{_libdir}/%{opera_chan}/lib_extra/
 
 %files
 %{_libdir}/%{opera_chan}/lib_extra/libffmpeg.so
 
 %changelog
+* Sun Jan 31 2016 carasin berlogue <carasin DOT berlogue AT mail DOT ru> - 5:48.0.2564.82-1
+- Change package numeration due to Chromium version
+- Match Opera version 35.0.2066.35
+- Remove Nosource: 0
+- Clip chromium source archive
+
 * Sat Jan 16 2016 carasin berlogue <carasin DOT berlogue AT mail DOT ru>
 - Add Nosource: 0
 
