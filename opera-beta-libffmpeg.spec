@@ -3,12 +3,12 @@
 %endif
 
 %global build_for_x86_64 1
-%global build_for_i386 1
+%global build_for_i386 0
 %global debug_package %{nil}
 
 %define chromium_system_libs 1
 %define opera_chan opera-beta
-%define opera_ver 35.0.2066.35
+%define opera_ver 36.0.2130.2
 
 %if 0%{?fedora} >= 22
 %define clang 1
@@ -18,8 +18,8 @@
 
 Summary:	Additional FFmpeg library for Opera Web browser providing H264 and MP4 support
 Name:		%{opera_chan}-libffmpeg
-Version:	48.0.2564.82
-Release:	3%{?dist}
+Version:	49.0.2623.23
+Release:	1%{?dist}
 Epoch:		5
 
 Group:		Applications/Internet
@@ -326,13 +326,17 @@ mkdir -p out/Release
 ninja-build -C out/Release ffmpeg
 
 %install
-mkdir -p %{buildroot}%{_libdir}/%{opera_chan}/lib_extra
-install -m 644 %{_builddir}/chromium-%{version}/out/Release/lib/libffmpeg.so %{buildroot}%{_libdir}/%{opera_chan}/lib_extra/
+mkdir -p %{buildroot}%{_libdir}/%{opera_chan}/lib
+install -m 644 %{_builddir}/chromium-%{version}/out/Release/lib/libffmpeg.so %{buildroot}%{_libdir}/%{opera_chan}/lib/
 
 %files
 %{_libdir}/%{opera_chan}/lib_extra/libffmpeg.so
 
 %changelog
+* Tue Feb 09 2016 carasin berlogue <carasin DOT berlogue AT mail DOT ru> - 5:49.0.2623.23-1
+- Update to 49.0.2623.23
+- Match Opera version 36.0.2130.2
+
 * Sun Jan 31 2016 carasin berlogue <carasin DOT berlogue AT mail DOT ru> - 5:48.0.2564.82-3
 - Fix <setup> section
 
