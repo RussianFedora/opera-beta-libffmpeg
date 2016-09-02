@@ -1,5 +1,5 @@
 #!/bin/sh
-BUILD_FROM_RPM=1
+BUILD_FROM_RPM=0
 mkdir -p ./opera-beta-$1
 pushd ./opera-beta-$1 &> /dev/null
 echo -en "\033[0;35m    Downloading Opera Beta package:\033[0m\n"
