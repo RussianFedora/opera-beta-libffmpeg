@@ -55,9 +55,9 @@
 Name:		%{opera_chan}-libffmpeg
 Version:	57.0.2987.74
 %if 0%{?fedora} >= 25
-Release:	2%{?dist}.R
+Release:	3%{?dist}.R
 %else
-Release:	2%{?dist}
+Release:	3%{?dist}
 %endif
 Epoch:		5
 Summary:	Additional FFmpeg library for Opera Web browser providing H264 and MP4 support
@@ -71,6 +71,7 @@ Source1:	depot_tools.git-master.tar.gz
 ### Chromium Fedora Patches ###
 # https://groups.google.com/a/chromium.org/forum/#!topic/gn-dev/7nlJv486bD4
 Patch0:	chromium-53.0.2785.92-last-commit-position.patch
+Patch1:	chromium-57.0.2987.98-gcc48-compat-version-stdatomic.patch
 
 # We can assume gcc and binutils.
 BuildRequires:	gcc-c++
@@ -103,8 +104,6 @@ BuildRequires:	pulseaudio-libs-devel
 
 # for /usr/bin/appstream-util
 # BuildRequires: libappstream-glib
-
-BuildRequires:	gcc clang
 
 # Fedora tries to use system libs whenever it can.
 BuildRequires:	bzip2-devel
@@ -197,6 +196,7 @@ H264 and MP4 support. Opera-libffmpeg package includes this library.
 
 ### Chromium Fedora Patches ###
 %patch0 -p1 -b .lastcommit
+%patch1 -p1 -b .gcc48-compat-version-stdatomic
 
 export CC="gcc"
 export CXX="g++"
@@ -397,6 +397,10 @@ install -m 644 %{_builddir}/chromium-%{version}/out/Release/libffmpeg.so %{build
 %{_libdir}/%{opera_chan}/lib_extra/libffmpeg.so
 
 %changelog
+* Sat Mar 11 2017 carasin berlogue <carasin DOT berlogue AT mail DOT ru> - 5:57.0.2987.74-3
+- Add gcc48-compat-version-stdatomic patch
+- Revert adding BR: gcc, clang
+
 * Sat Mar 11 2017 carasin berlogue <carasin DOT berlogue AT mail DOT ru> - 5:57.0.2987.74-2
 - Add BR: gcc, clang to fix EL7 build
 
