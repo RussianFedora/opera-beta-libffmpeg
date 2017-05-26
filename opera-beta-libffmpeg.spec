@@ -50,14 +50,14 @@
 %global build_for_x86_64 1
 %global build_for_i386 1
 %define opera_chan opera-beta
-%define opera_ver 45.0.2552.453
+%define opera_ver 46.0.2597.6
 
 Name:		%{opera_chan}-libffmpeg
-Version:	58.0.3029.41
+Version:	59.0.3067.6
 %if 0%{?fedora} >= 25
-Release:	2%{?dist}.R
+Release:	1%{?dist}.R
 %else
-Release:	2%{?dist}
+Release:	1%{?dist}
 %endif
 Epoch:		5
 Summary:	Additional FFmpeg library for Opera Web browser providing H264 and MP4 support
@@ -71,8 +71,12 @@ Source1:	depot_tools.git-master.tar.gz
 ### Chromium Fedora Patches ###
 # https://groups.google.com/a/chromium.org/forum/#!topic/gn-dev/7nlJv486bD4
 Patch0:	chromium-53.0.2785.92-last-commit-position.patch
-Patch1:	chromium-57.0.2987.98-gcc48-compat-version-stdatomic.patch
-Patch2:	chromium-gn-bootstrap-r2.patch
+#Patch1:	chromium-57.0.2987.98-gcc48-compat-version-stdatomic.patch
+#Patch2:	chromium-gn-bootstrap-r2.patch
+Patch3: chromium-59.0.3071.29-nullfix.patch
+Patch4: chromium-59.0.3071.29-i686-ld-memory-tricks.patch
+Patch5: chromium-59.0.3071.29-setopaque.patch
+Patch6: chromium-59.0.3071.29-gcc7.patch
 
 # We can assume gcc and binutils.
 BuildRequires:	gcc-c++
@@ -197,8 +201,12 @@ H264 and MP4 support. Opera-libffmpeg package includes this library.
 
 ### Chromium Fedora Patches ###
 %patch0 -p1 -b .lastcommit
-%patch1 -p1 -b .gcc48-compat-version-stdatomic
-%patch2 -p1 -b .gn
+#%patch1 -p1 -b .gcc48-compat-version-stdatomic
+#%patch2 -p1 -b .gn
+%patch3 -p1 -b .nullfix
+%patch4 -p1 -b .ldmemory
+%patch5 -p1 -b .setopaque
+%patch6 -p1 -b .gcc7
 
 export CC="gcc"
 export CXX="g++"
@@ -327,11 +335,9 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/pdfium/third_party/bigint' \
 	'third_party/pdfium/third_party/freetype' \
 	'third_party/pdfium/third_party/lcms2-2.6' \
-	'third_party/pdfium/third_party/libjpeg' \
 	'third_party/pdfium/third_party/libopenjpeg20' \
 	'third_party/pdfium/third_party/libpng16' \
 	'third_party/pdfium/third_party/libtiff' \
-	'third_party/pdfium/third_party/zlib_v128' \
 	'third_party/polymer' \
 	'third_party/protobuf' \
 	'third_party/protobuf/third_party/six' \
@@ -399,6 +405,18 @@ install -m 644 %{_builddir}/chromium-%{version}/out/Release/libffmpeg.so %{build
 %{_libdir}/%{opera_chan}/lib_extra/libffmpeg.so
 
 %changelog
+* Fri May 26 2017 carasin berlogue <carasin DOT berlogue AT mail DOT ru> - 5:59.0.3067.6-1
+- Update to 59.0.3067.6
+- Match Opera version 46.0.2597.6
+- Add patches:
+    chromium-59.0.3071.29-nullfix.patch
+    chromium-59.0.3071.29-i686-ld-memory-tricks.patch
+    chromium-59.0.3071.29-setopaque.patch
+    chromium-59.0.3071.29-gcc7.patch
+- Drop patches:
+    chromium-57.0.2987.98-gcc48-compat-version-stdatomic.patch
+    chromium-gn-bootstrap-r2.patch
+
 * Fri Apr 21 2017 carasin berlogue <carasin DOT berlogue AT mail DOT ru> - 5:58.0.3029.41-2
 - Bump version
 
